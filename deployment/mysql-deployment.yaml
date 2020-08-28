@@ -41,7 +41,7 @@ spec:
               name: mysql
           volumeMounts:
             - name: mysql-persistent-storage
-              mountPath: /docker-entrypoint-initdb.d
+              mountPath: /-entrypoint-initdb.d
       volumes:
         - name: mysql-persistent-storage
           emptyDir: {}

@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   labels:
     app: pages
+    tier: service
   name: pages
   namespace: [student-name]
 spec:
@@ -10,14 +11,16 @@ spec:
   selector:
     matchLabels:
       app: pages
+      tier: service
   strategy: {}
   template:
     metadata:
       labels:
         app: pages
+        tier: service
     spec:
       containers:
-        - image: [docker-username]/pages:[tag]
+        - image: [docker-username]/pages:service
           name: pages
           ports:
             - containerPort: 8080
@@ -27,3 +30,12 @@ spec:
                 configMapKeyRef:
                   name: pages-config-map
                   key: PAGE_CONTENT
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:mysql://pages-mysql/pages?useSSL=false
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "root"
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-pass
+                  key: password
