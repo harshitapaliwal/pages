@@ -13,6 +13,12 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
+      - name: Startup test database instance
+        run: sudo service mysql start
+      - name: Create test database
+        run: |
+          chmod +x ./scripts/build-setup.sh
+          bash ./scripts/build-setup.sh
       - name: Build with Gradle
         run: |
           chmod +x ./gradlew
@@ -29,8 +35,7 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: ${{ secrets.DOCKER_USERNAME }}/pages
-          tags: pipeline
-
+          tags: db
   deploy-to-cluster:
     needs: build-artifact
     runs-on: ubuntu-latest
@@ -53,7 +58,5 @@ jobs:
         run: |
           aws eks --region ap-south-1 update-kubeconfig --name dees-cloud
           kubectl config get-contexts
-          kubectl apply -f deployment/pages-namespace.yaml
-          kubectl apply -f deployment/pages-config.yaml
-          kubectl apply -f deployment/pages-service.yaml
-          kubectl apply -f deployment/pages-deployment.yaml
+          chmod +x ./scripts/deploy-to-k8s.sh
+          bash ./scripts/deploy-to-k8s.sh
