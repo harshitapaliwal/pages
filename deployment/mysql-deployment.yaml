@@ -41,7 +41,15 @@ spec:
               name: mysql
           volumeMounts:
             - name: mysql-persistent-storage
-              mountPath: /-entrypoint-initdb.d
+              mountPath: /var/lib/mysql
+          resources:
+            requests:
+              memory: 500Mi
+              cpu: 0.25
+            limits:
+              memory: 900Mi
+              cpu: 1
       volumes:
-        - name: mysql-persistent-storage
-          emptyDir: {}
+         - name: mysql-persistent-storage
+           persistentVolumeClaim:
+             claimName: mysql-pvc

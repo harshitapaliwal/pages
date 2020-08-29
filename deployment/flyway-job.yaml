@@ -40,6 +40,13 @@ spec:
           volumeMounts:
             - mountPath: /flyway/sql
               name: sql
+          resources:
+            requests:
+              memory: 500Mi
+              cpu: 0.25
+            limits:
+              memory: 900Mi
+              cpu: 1
       volumes:
         - name: sql
           configMap:
