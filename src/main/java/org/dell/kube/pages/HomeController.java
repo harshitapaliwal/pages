@@ -8,11 +8,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/")
 public class HomeController {
+    private String pageContent;
 
-
+    public HomeController(@Value("${page.content}") String pageContent){
+        this.pageContent=pageContent;
+    }
     @GetMapping
     public String getPage(){
-        return "Hello from page : YellowPages";
+        return "Hello from page : "+pageContent+" ";
     }
 
 
