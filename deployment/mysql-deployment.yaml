@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: pages
+    tier: database
+  name: mysql
+  namespace: beta
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pages
+      tier: database
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: pages
+        tier: database
+    spec:
+      volumes:
+      - name: mysql-persistence-volume
+        emptyDir: {}
+      containers:
+        - image: mysql:8.0
+          name: mysql
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-pass
+                  key: password
+            - name: MYSQL_SERVICE_HOST
+              value: "pages-mysql"
+            - name: MYSQL_SERVICE_PORT
+              value: "3306"
+            - name: MYSQL_DATABASE
+              value: "pages"
+            - name: MYSQL_USER
+              value: "root"
+          resources: {}
+          volumeMounts:
+          - name: mysql-persistence-volume
+            mountPath: /docker-entrypoint-initdb.d
+status: {}
