@@ -17,7 +17,7 @@ spec:
         app: pages
     spec:
       containers:
-        - image: hapaliwa/pages:1.0
+        - image: hapaliwa/pages:config
           name: pages
           ports:
             - containerPort: 8080
