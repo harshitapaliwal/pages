@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: pages-mysql
-  namespace: [student-name]
+  namespace: beta
   labels:
     app: pages
     tier: database
