@@ -20,7 +20,7 @@ spec:
         tier: service
     spec:
       containers:
-        - image: hapaliwa/pages:monitor
+        - image: hapaliwa/pages:distributed
           name: page
           ports:
             - containerPort: 8080
